@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from home import views as home_views
 from band import views as bandViews
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +32,5 @@ urlpatterns = [
     path('bands/', bandViews.band_list, name='band_list'),
     path('band/<int:id>/', bandViews.band_detail, name='band_detail'),
     path('venues/', bandViews.venue_list, name='venue_list'),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+
