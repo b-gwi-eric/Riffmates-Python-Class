@@ -1,31 +1,166 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ musician.first_name }} {{ musician.last_name }} | RiffMates{% endblock %}
-
+{% block title %}RiffMates | Home{% endblock %}
+<h1>🎹🎺🎵</h1>
 {% block content %}
-<div class="welcome-section">
-    <div>
-      <h1 class="display-4 fw-bold">🎸 Welcome to Riffmates News</h1>
-      <p class="lead mt-3">
-        Dive into the rhythm of real stories, breaking updates, and music that
-        speaks. This is where riffs meet reality.
-      </p>
-      <a href="{% url 'news' %}" class="btn btn-outline-light btn-lg mt-4">
-        Start Reading
-      </a>
-    </div>
-  </div>
-  <style>
-    .welcome-section {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #1f1f1f, #3c3c3c);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
+
+<style>
+    :root {
+        --clay: #B76E79;
+        --linen: #F5E6E0;
+        --sage: #8A9B6E;
+        --umber: #6B4D3D;
     }
-  </style>
+
+    .artisan-nav {
+        background: var(--linen) !important;
+        border-bottom: 3px solid var(--clay);
+        box-shadow: 0 4px 20px rgba(107, 77, 61, 0.1);
+    }
+
+    .nav-handwritten {
+        font-family: 'Dancing Script', cursive;
+        font-weight: 700;
+        color: var(--umber) !important;
+        position: relative;
+        margin: 0 1.2rem;
+    }
+
+    .nav-handwritten::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--clay);
+        transition: width 0.3s ease;
+    }
+
+    .nav-handwritten:hover::after {
+        width: 100%;
+    }
+
+    .hero-asymmetric {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        min-height: 90vh;
+        background: var(--linen);
+    }
+
+    .hero-text {
+        padding: 4rem;
+        align-self: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-image {
+        background: url('{% static 'artisan-bg.jpg' %}') center/cover;
+        clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .organic-shape {
+        position: absolute;
+        background: var(--sage);
+        opacity: 0.1;
+        z-index: -1;
+    }
+
+    .clay-button {
+        background: var(--clay);
+        color: var(--linen) !important;
+        padding: 1rem 2.5rem;
+        border-radius: 2rem;
+        border: 2px solid var(--umber);
+        transition: transform 0.3s ease;
+    }
+
+    .clay-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(183, 110, 121, 0.3);
+    }
+
+    .handwritten-title {
+        font-family: 'Dancing Script', cursive;
+        color: var(--umber);
+        position: relative;
+        display: inline-block;
+    }
+
+    .handwritten-title::after {
+        content: '';
+        position: absolute;
+        right: -30px;
+        top: 50%;
+        width: 25px;
+        height: 25px;
+        background: url('{% static 'flourish.png' %}') center/contain;
+    }
+
+    .clay-card {
+        background: var(--linen);
+        border: 2px solid var(--clay);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .clay-card:hover {
+        box-shadow: 8px 8px 0 var(--sage);
+        transform: translate(-3px, -3px);
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg artisan-nav">
+    <div class="container">
+      <h1>🎹🎺🎵</h1> 
+    </div>
+</nav>
+
+<main>
+    <div class="hero-asymmetric">
+        <div class="hero-text">
+            <div class="organic-shape" style="
+                width: 200px;
+                height: 200px;
+                border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+                top: -50px;
+                left: -50px;
+            "></div>
+            
+            <h1 class="handwritten-title display-1 mb-4">
+                Crafting Sound Stories
+            </h1>
+            <p class="lead fs-3 mb-5" style="color: var(--umber);">
+                Where melodies meet craftsmanship in every note
+            </p>
+            <a href="#" class="clay-button d-inline-block fs-5">
+                Explore Artistry
+            </a>
+        </div>
+        <div class="hero-image"></div>
+    </div>
+
+    <section class="py-6" style="background: var(--sage);">
+        <div class="container">
+            <h2 class="handwritten-title text-center mb-5 display-2">Current Features</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="clay-card p-4 text-center">
+                        <div class="mb-3">
+                            <img src="{% static 'back.jpeg' %}" style="height: 80px;">
+                        </div>
+                        <h3 class="mb-3" style="color: var(--umber);">Artisan Albums</h3>
+                        <p class="mb-0" style="color: var(--umber);">
+                          🎺🎺 🎹🎵 Handpicked collections from master sound crafters
+                        </p>
+                    </div>
+                </div>
+                <!-- Repeat similar cards -->
+            </div>
+        </div>
+    </section>
+</main>
 {% endblock %}

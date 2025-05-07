@@ -1,127 +1,253 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ musician.first_name }} {{ musician.last_name }} | RiffMates{% endblock %}
+{% block title %}RiffMates | Home{% endblock %}
 
 {% block content %}
-<!-- Embedded CSS -->
+<!-- Home Page CSS -->
 <style>
-    .nav-link-custom {
-        color: #ddd !important;
-        position: relative;
-        transition: color 0.3s ease;
+    :root {
+        --neon-green: #4AF682;
+        --cyber-blue: #00f7ff;
+        --dark-bg: #0a0a0a;
     }
 
-    .nav-link-custom::after {
+    /* Dynamic Gradient Background */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg,
+            #0f0f0f 25%,
+            #1a1a1a 25%,
+            #1a1a1a 50%,
+            #0f0f0f 50%,
+            #0f0f0f 75%,
+            #1a1a1a 75%);
+        background-size: 4px 4px;
+        z-index: -2;
+        opacity: 0.4;
+    }
+
+    /* Cyberpunk Navbar */
+    .cyber-nav {
+        background: rgba(10, 10, 10, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid var(--neon-green);
+        box-shadow: 0 0 15px rgba(74, 246, 130, 0.2);
+    }
+
+    .nav-link {
+        position: relative;
+        color: #fff !important;
+        margin: 0 1.5rem;
+        padding: 0.5rem 0 !important;
+        background: linear-gradient(var(--neon-green), var(--neon-green)) 
+                    no-repeat right bottom / 0 2px;
+        transition: background-size 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .nav-link:hover {
+        background-size: 100% 2px;
+        background-position-x: left;
+    }
+
+    .nav-link::after {
         content: '';
         position: absolute;
-        left: 0;
-        bottom: -4px;
+        right: -1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2px;
+        height: 60%;
+        background: var(--neon-green);
+        opacity: 0.3;
+    }
+
+    /* Holographic Hero Section */
+    .hero-container {
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        backdrop-filter: blur(20px);
+        background: rgba(10, 10, 10, 0.7);
+        border: 2px solid var(--neon-green);
+        box-shadow: 0 0 40px rgba(74, 246, 130, 0.3);
+    }
+
+    .cyber-title {
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, var(--neon-green), var(--cyber-blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(74, 246, 130, 0.4);
+    }
+
+    .floating-grid {
+        position: absolute;
         width: 100%;
-        height: 2px;
-        background-color:rgb(227, 253, 62);
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.3s ease-in-out;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(74, 246, 130, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(74, 246, 130, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        animation: gridMove 20s linear infinite;
+        z-index: 1;
     }
 
-    .nav-link-custom:hover::after {
-        transform: scaleX(1);
-        transform-origin: left;
+    @keyframes gridMove {
+        from { background-position: 0 0; }
+        to { background-position: 40px 40px; }
     }
 
-    .nav-link-custom:hover {
-        color:rgb(234, 249, 22) !important;
+    /* Neon Button */
+    .neon-btn {
+        position: relative;
+        padding: 1.5rem 3rem;
+        border: 2px solid var(--neon-green);
+        background: transparent;
+        color: var(--neon-green);
+        overflow: hidden;
+        transition: 0.5s;
+    }
+
+    .neon-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0;
+        height: 0;
+        background: rgba(74, 246, 130, 0.1);
+        border-radius: 50%;
+        transition: 0.5s;
+    }
+
+    .neon-btn:hover {
+        text-shadow: 0 0 10px var(--neon-green);
+        box-shadow: 0 0 20px var(--neon-green);
+    }
+
+    .neon-btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    /* Hologram Card */
+    .hologram-card {
+        background: rgba(20, 20, 20, 0.8);
+        border: 1px solid rgba(74, 246, 130, 0.3);
+        backdrop-filter: blur(10px);
+        transition: 0.3s;
+        position: relative;
+    }
+
+    .hologram-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 30px rgba(74, 246, 130, 0.2);
+    }
+
+    .hologram-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, var(--neon-green), var(--cyber-blue));
+        z-index: -1;
+        animation: borderGlow 3s linear infinite;
+    }
+
+    @keyframes borderGlow {
+        0% { opacity: 0.8; }
+        50% { opacity: 0.3; }
+        100% { opacity: 0.8; }
     }
 </style>
 
-<!-- Custom Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #111;">
+<!-- Cyberpunk Navigation -->
+<nav class="navbar navbar-expand-lg cyber-nav fixed-top">
     <div class="container">
-        <a class="navbar-brand fw-bold text-success" href="{% url 'home' %}">🎶 RiffMates</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'logo-neon.png' %}" height="40" class="d-inline-block align-top me-2">
+            <span class="cyber-title fs-2">RiffMates</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#cyberNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse" id="cyberNav">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link nav-link-custom" href="{% url 'bands' %}">Bands</a>
+                    <a class="nav-link active" href="{% url 'home' %}">Newsfeed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-custom" href="#">Performances</a>
+                    <a class="nav-link" href="{% url 'musicians' %}">Artists</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-custom" href="#">About</a>
+                    <a class="nav-link" href="{% url 'bands' %}">Crews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Venues</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Events</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Header Section with Your Background Image -->
-<div class="text-white text-center py-5 px-3 position-relative" style="
-    background-image: url('{% static 'back.jpeg' %}');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    backdrop-filter: brightness(0.7);
-">
-    <div class="bg-dark bg-opacity-75 p-4 rounded-4 d-inline-block">
-        <h1 class="display-5 fw-bold mb-3">
-            {{ musician.first_name }} <span class="text-success">{{ musician.last_name }}</span>
-        </h1>
-        {% if musician.birth %}
-            <div class="badge bg-success text-dark px-4 py-2 fs-6 shadow-sm">
-                <i class="bi bi-balloon me-2"></i>Born {{ musician.birth|date:"F j, Y" }}
-            </div>
-        {% endif %}
-    </div>
-</div>
-
-<!-- Main Content -->
-<div class="container py-5">
-    <div class="card border-0 shadow rounded-4 overflow-hidden">
-        <div class="card-body p-5">
-            <div class="row g-5">
-                <!-- Left Column -->
-                <div class="col-lg-8">
-                    {% if musician.birth %}
-                        <div class="mb-4">
-                            <div class="bg-secondary text-white px-4 py-2 rounded-pill d-inline-block shadow-sm">
-                                <i class="bi bi-clock-history me-2"></i>
-                                {{ musician.first_name }} is {{ musician.birth|timesince }} old
-                            </div>
-                        </div>
-                    {% endif %}
-
-                    <h3 class="mb-4 text-primary border-bottom pb-2">
-                        <i class="bi bi-journal-text me-2"></i>Biography
-                    </h3>
-                    <p class="lead text-muted fst-italic">
-                        "{{ musician.bio|default:"A talented musician whose story is yet to be written..." }}"
-                    </p>
-                </div>
-
-                <!-- Right Column -->
-                <div class="col-lg-4 text-center">
-                    <div class="mb-4">
-                        <div class="rounded-circle bg-light border d-flex justify-content-center align-items-center mx-auto shadow-sm" style="width: 200px; height: 200px;">
-                            <i class="bi bi-person-gear text-secondary" style="font-size: 5rem;"></i>
-                        </div>
-                    </div>
-
-                    <div class="d-grid gap-3">
-                        <a href="{% url 'bands' %}" class="btn btn-outline-dark btn-lg py-2 shadow-sm">
-                            <i class="bi bi-people me-2"></i>View All Bands
-                        </a>
-                        <a href="#" class="btn btn-success btn-lg py-2 shadow-sm">
-                            <i class="bi bi-mic me-2"></i>View Performances
-                        </a>
-                    </div>
-                </div>
+<!-- Main Hero Section -->
+<div class="hero-container d-flex align-items-center">
+    <div class="floating-grid"></div>
+    <div class="container">
+        <div class="hero-content p-5 rounded-4 mx-auto" style="max-width: 800px;">
+            <h1 class="cyber-title display-1 mb-4">Revolt Through Sound</h1>
+            <p class="lead text-white-50 mb-5 fs-3">
+                Where music breaks chains and builds revolutions
+            </p>
+            <div class="d-flex justify-content-center gap-4">
+                <button class="neon-btn">
+                    <i class="bi bi-lightning-charge-fill me-2"></i>Explore Now
+                </button>
+                <button class="neon-btn">
+                    <i class="bi bi-mic-fill me-2"></i>Join Movement
+                </button>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
+<!-- Featured Section -->
+<section class="py-6 position-relative" style="background: #0a0a0a;">
+    <div class="container">
+        <h2 class="cyber-title text-center mb-5">Latest Revolutions</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="hologram-card p-4 rounded-3 text-white">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-neon p-2 rounded-circle me-3">
+                            <i class="bi bi-vinyl fs-4"></i>
+                        </div>
+                        <h3 class="mb-0">New Releases</h3>
+                    </div>
+                    <p class="text-white-50">Groundbreaking tracks shaking the system</p>
+                    <div class="neon-line"></div>
+                </div>
+            </div>
+            <!-- Repeat similar cards -->
+        </div>
+    </div>
+</section>
+{% endblock %}

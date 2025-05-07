@@ -94,3 +94,4 @@ def band_detail(request, id):
 def venue_list(request):
     venues = Venue.objects.prefetch_related('room_set').all()
     return render(request, 'venue_list.html', {'venues': venues})
+
